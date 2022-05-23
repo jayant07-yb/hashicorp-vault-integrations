@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"regexp"
 	"strings"
 
@@ -81,8 +80,6 @@ func (db *ysql) Initialize(ctx context.Context, req dbplugin.InitializeRequest) 
 	if err != nil {
 		return dbplugin.InitializeResponse{}, fmt.Errorf("failed to retrieve username_template: %w", err)
 	}
-
-	log.Println("initializing --> ", usernameTemplate)
 
 	if usernameTemplate == "" {
 		usernameTemplate = defaultUserNameTemplate
