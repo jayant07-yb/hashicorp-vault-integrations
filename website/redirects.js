@@ -341,8 +341,8 @@ module.exports = [
     permanent: true,
   },
   {
-    source: '/docs/secrets/yugabyte-ysql',
-    destination: '/docs/secrets/databases/yugabyte-ysql',
+    source: '/docs/secrets/yugabytedb-ysql',
+    destination: '/docs/secrets/databases/yugabytedb-ysql',
     permanent: true,
   },
   {

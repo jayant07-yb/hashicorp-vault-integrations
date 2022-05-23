@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/hashicorp/vault/api"
-	ysql "github.com/hashicorp/vault/plugins/database/yugabyte-ysql"
+	ysql "github.com/hashicorp/vault/plugins/database/yugabytedb-ysql"
 	"github.com/hashicorp/vault/sdk/database/dbplugin/v5"
 )
 

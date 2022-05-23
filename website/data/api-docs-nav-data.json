@@ -103,7 +103,7 @@
           },
           {
             "title": "YugabyteDB (YSQL)",
-            "path": "secret/databases/yugabyte-ysql"
+            "path": "secret/databases/yugabytedb-ysql"
           },
           {
             "title": "Redshift",

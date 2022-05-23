@@ -40,7 +40,7 @@ import (
 	"github.com/hashicorp/vault/internalshared/configutil"
 	dbMysql "github.com/hashicorp/vault/plugins/database/mysql"
 	dbPostgres "github.com/hashicorp/vault/plugins/database/postgresql"
-	dbYsql "github.com/hashicorp/vault/plugins/database/yugabyte-ysql"
+	dbYsql "github.com/hashicorp/vault/plugins/database/yugabytedb-ysql"
 	"github.com/hashicorp/vault/sdk/framework"
 	"github.com/hashicorp/vault/sdk/helper/consts"
 	"github.com/hashicorp/vault/sdk/helper/logging"
@@ -2179,7 +2179,7 @@ func (m *mockBuiltinRegistry) Get(name string, pluginType consts.PluginType) (fu
 		return dbPostgres.New, true
 	}
 
-	if name == "yugabyte-ysql-database-plugin" {
+	if name == "yugabytedb-ysql-database-plugin" {
 		return dbYsql.New, true
 	}
 	return dbMysql.New(dbMysql.DefaultUserNameTemplate), true
