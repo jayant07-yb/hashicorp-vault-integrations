@@ -84,7 +84,7 @@ func TestYsql_NewUser(t *testing.T) {
 				},
 				// No statements
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: true,
 			credsAssertion: assertCreds(
@@ -109,7 +109,7 @@ func TestYsql_NewUser(t *testing.T) {
 					},
 				},
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: false,
 			credsAssertion: assertCreds(
@@ -134,7 +134,7 @@ func TestYsql_NewUser(t *testing.T) {
 					},
 				},
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: false,
 			credsAssertion: assertCreds(
@@ -160,7 +160,7 @@ func TestYsql_NewUser(t *testing.T) {
 					},
 				},
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: false,
 			credsAssertion: assertCreds(
@@ -186,7 +186,7 @@ func TestYsql_NewUser(t *testing.T) {
 					},
 				},
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: false,
 			credsAssertion: assertCreds(
@@ -208,7 +208,7 @@ func TestYsql_NewUser(t *testing.T) {
 					},
 				},
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: false,
 			credsAssertion: assertCreds(
@@ -228,7 +228,7 @@ func TestYsql_NewUser(t *testing.T) {
 					},
 				},
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: false,
 			credsAssertion: assertCreds(
@@ -246,7 +246,7 @@ func TestYsql_NewUser(t *testing.T) {
 					Commands: newUserLargeBlockStatements,
 				},
 				Password:   "somesecurepassword",
-				Expiration: time.Now().Add(1 * time.Minute),
+				Expiration: time.Now().Add(2 * time.Minute),
 			},
 			expectErr: false,
 			credsAssertion: assertCreds(
@@ -263,7 +263,7 @@ func TestYsql_NewUser(t *testing.T) {
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
 			// Give a timeout just in case the test decides to be problematic
-			ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 
 			resp, err := db.NewUser(ctx, test.req)
@@ -329,7 +329,7 @@ func TestUpdateUser_Password(t *testing.T) {
 					Commands: []string{createAdminUser},
 				},
 				Password:   initialPass,
-				Expiration: time.Now().Add(2 * time.Second),
+				Expiration: time.Now().Add(2 * time.Minute),
 			}
 			createResp := dbtesting.AssertNewUser(t, db, createReq)
 
@@ -346,7 +346,7 @@ func TestUpdateUser_Password(t *testing.T) {
 				},
 			}
 
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 			_, err := db.UpdateUser(ctx, updateReq)
 			if test.expectErr && err == nil {
@@ -370,7 +370,7 @@ func TestUpdateUser_Password(t *testing.T) {
 			},
 		}
 
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 		defer cancel()
 		_, err := db.UpdateUser(ctx, updateReq)
 		if err == nil {
@@ -393,30 +393,30 @@ func TestUpdateUser_Expiration(t *testing.T) {
 	now := time.Now()
 	tests := map[string]testCase{
 		"no statements": {
-			initialExpiration:  now.Add(1 * time.Minute),
+			initialExpiration:  now.Add(2 * time.Minute),
 			newExpiration:      now.Add(5 * time.Minute),
 			expectedExpiration: now.Add(5 * time.Minute),
 			statements:         nil,
 			expectErr:          false,
 		},
 		"default statements with name": {
-			initialExpiration:  now.Add(1 * time.Minute),
+			initialExpiration:  now.Add(2 * time.Minute),
 			newExpiration:      now.Add(5 * time.Minute),
 			expectedExpiration: now.Add(5 * time.Minute),
 			statements:         []string{defaultExpirationStatement},
 			expectErr:          false,
 		},
 		"default statements with username": {
-			initialExpiration:  now.Add(1 * time.Minute),
+			initialExpiration:  now.Add(2 * time.Minute),
 			newExpiration:      now.Add(5 * time.Minute),
 			expectedExpiration: now.Add(5 * time.Minute),
 			statements:         []string{`ALTER ROLE "{{username}}" VALID UNTIL '{{expiration}}';`},
 			expectErr:          false,
 		},
 		"bad statements": {
-			initialExpiration:  now.Add(1 * time.Minute),
+			initialExpiration:  now.Add(2 * time.Minute),
 			newExpiration:      now.Add(5 * time.Minute),
-			expectedExpiration: now.Add(1 * time.Minute),
+			expectedExpiration: now.Add(2 * time.Minute),
 			statements:         []string{"ladshfouay09sgj"},
 			expectErr:          true,
 		},
@@ -464,7 +464,7 @@ func TestUpdateUser_Expiration(t *testing.T) {
 				},
 			}
 
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 			_, err := db.UpdateUser(ctx, updateReq)
 			if test.expectErr && err == nil {
@@ -485,7 +485,7 @@ func TestUpdateUser_Expiration(t *testing.T) {
 
 func getExpiration(t testing.TB, db *ysql, username string) time.Time {
 	t.Helper()
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
 	query := fmt.Sprintf("select valuntil from pg_catalog.pg_user where usename = '%s'", username)
@@ -534,10 +534,9 @@ func TestDeleteUser(t *testing.T) {
 
 	tests := map[string]testCase{
 		"no statements": {
-			revokeStmts: []string{},
-			expectErr:   false,
-			// Wait for a short time before failing because sgres takes a moment to finish deleting the user
-			credsAssertion: waitUntilCredsDoNotExist(2 * time.Second),
+			revokeStmts:    []string{},
+			expectErr:      false,
+			credsAssertion: waitUntilCredsDoNotExist(1 * time.Second),
 		},
 		"statements with name": {
 			revokeStmts: []string{`
@@ -546,9 +545,8 @@ func TestDeleteUser(t *testing.T) {
 				REVOKE USAGE ON SCHEMA public FROM "{{name}}";
 		
 				DROP ROLE IF EXISTS "{{name}}";`},
-			expectErr: false,
-			// Wait for a short time before failing because postgres takes a moment to finish deleting the user
-			credsAssertion: waitUntilCredsDoNotExist(2 * time.Second),
+			expectErr:      false,
+			credsAssertion: waitUntilCredsDoNotExist(1 * time.Second),
 		},
 		"statements with username": {
 			revokeStmts: []string{`
@@ -557,15 +555,13 @@ func TestDeleteUser(t *testing.T) {
 				REVOKE USAGE ON SCHEMA public FROM "{{username}}";
 		
 				DROP ROLE IF EXISTS "{{username}}";`},
-			expectErr: false,
-			// Wait for a short time before failing because postgres takes a moment to finish deleting the user
-			credsAssertion: waitUntilCredsDoNotExist(2 * time.Second),
+			expectErr:      false,
+			credsAssertion: waitUntilCredsDoNotExist(1 * time.Second),
 		},
 		"bad statements": {
-			revokeStmts: []string{`8a9yhfoiasjff`},
-			expectErr:   true,
-			// Wait for a short time before checking because postgres takes a moment to finish deleting the user
-			credsAssertion: assertCredsExistAfter(100 * time.Millisecond),
+			revokeStmts:    []string{`8a9yhfoiasjff`},
+			expectErr:      true,
+			credsAssertion: assertCredsExistAfter(1 * time.Second),
 		},
 	}
 
@@ -585,7 +581,7 @@ func TestDeleteUser(t *testing.T) {
 					Commands: []string{createAdminUser},
 				},
 				Password:   password,
-				Expiration: time.Now().Add(2 * time.Second),
+				Expiration: time.Now().Add(2 * time.Minute),
 			}
 			createResp := dbtesting.AssertNewUser(t, db, createReq)
 
@@ -598,7 +594,7 @@ func TestDeleteUser(t *testing.T) {
 				},
 			}
 
-			ctx, cancel := context.WithTimeout(context.Background(), 50*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 
 			_, err := db.DeleteUser(ctx, deleteReq)
@@ -941,7 +937,7 @@ func TestNewUser_CustomUsername(t *testing.T) {
 
 			db := new()
 
-			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+			ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 
 			_, err := db.Initialize(ctx, initReq)
@@ -960,9 +956,9 @@ func TestNewUser_CustomUsername(t *testing.T) {
 					},
 				},
 				Password:   "myReally-S3curePassword",
-				Expiration: time.Now().Add(1 * time.Hour),
+				Expiration: time.Now().Add(2 * time.Hour),
 			}
-			ctx, cancel = context.WithTimeout(context.Background(), 2*time.Second)
+			ctx, cancel = context.WithTimeout(context.Background(), 2*time.Minute)
 			defer cancel()
 
 			newUserResp, err := db.NewUser(ctx, newUserReq)
