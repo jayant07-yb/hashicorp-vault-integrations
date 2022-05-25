@@ -20,7 +20,7 @@ func PrepareTestContainer(t *testing.T, version string) (func(), string) {
 		ImageRepo:     "yugabytedb/yugabyte",
 		Cmd:           []string{"./bin/yugabyted", "start", "--daemon=false"},
 		ImageTag:      version,
-		Env:           []string{"YSQL_DB=database", "YSQL_PASSWORD=secret", "POSTGRES_DB=database", "POSTGRES_PASSWORD=secret"},
+		Env:           []string{"YSQL_DB=database", "YSQL_PASSWORD=secret"},
 		Ports:         []string{"5433/tcp"},
 		ContainerName: "yugabyte",
 	})
