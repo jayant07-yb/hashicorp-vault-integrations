@@ -53,6 +53,7 @@ import (
 	dbMysql "github.com/hashicorp/vault/plugins/database/mysql"
 	dbPostgres "github.com/hashicorp/vault/plugins/database/postgresql"
 	dbRedshift "github.com/hashicorp/vault/plugins/database/redshift"
+	dbYSQL "github.com/hashicorp/vault/plugins/database/yugabytedb-ysql"
 	"github.com/hashicorp/vault/sdk/helper/consts"
 	"github.com/hashicorp/vault/sdk/logical"
 )
@@ -99,17 +100,18 @@ func newRegistry() *registry {
 			"mysql-rds-database-plugin":    dbMysql.New(dbMysql.DefaultLegacyUserNameTemplate),
 			"mysql-legacy-database-plugin": dbMysql.New(dbMysql.DefaultLegacyUserNameTemplate),
 
-			"cassandra-database-plugin":     dbCass.New,
-			"couchbase-database-plugin":     dbCouchbase.New,
-			"elasticsearch-database-plugin": dbElastic.New,
-			"hana-database-plugin":          dbHana.New,
-			"influxdb-database-plugin":      dbInflux.New,
-			"mongodb-database-plugin":       dbMongo.New,
-			"mongodbatlas-database-plugin":  dbMongoAtlas.New,
-			"mssql-database-plugin":         dbMssql.New,
-			"postgresql-database-plugin":    dbPostgres.New,
-			"redshift-database-plugin":      dbRedshift.New,
-			"snowflake-database-plugin":     dbSnowflake.New,
+			"cassandra-database-plugin":       dbCass.New,
+			"couchbase-database-plugin":       dbCouchbase.New,
+			"elasticsearch-database-plugin":   dbElastic.New,
+			"hana-database-plugin":            dbHana.New,
+			"influxdb-database-plugin":        dbInflux.New,
+			"mongodb-database-plugin":         dbMongo.New,
+			"mongodbatlas-database-plugin":    dbMongoAtlas.New,
+			"mssql-database-plugin":           dbMssql.New,
+			"postgresql-database-plugin":      dbPostgres.New,
+			"yugabytedb-ysql-database-plugin": dbYSQL.New,
+			"redshift-database-plugin":        dbRedshift.New,
+			"snowflake-database-plugin":       dbSnowflake.New,
 		},
 		logicalBackends: map[string]logical.Factory{
 			"ad":           logicalAd.Factory,

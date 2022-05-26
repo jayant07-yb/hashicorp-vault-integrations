@@ -341,6 +341,11 @@ module.exports = [
     permanent: true,
   },
   {
+    source: '/docs/secrets/yugabytedb-ysql',
+    destination: '/docs/secrets/databases/yugabytedb-ysql',
+    permanent: true,
+  },
+  {
     source: '/guides/authentication',
     destination: '/guides/identity/authentication',
     permanent: true,

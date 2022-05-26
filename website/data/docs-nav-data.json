@@ -993,6 +993,10 @@
             "path": "secrets/databases/postgresql"
           },
           {
+            "title": "YugabyteDB (YSQL)",
+            "path": "secrets/databases/yugabytedb-ysql"
+          },
+          {
             "title": "Redshift",
             "path": "secrets/databases/redshift"
           },
