@@ -61,6 +61,7 @@ import (
 	physS3 "github.com/hashicorp/vault/physical/s3"
 	physSpanner "github.com/hashicorp/vault/physical/spanner"
 	physSwift "github.com/hashicorp/vault/physical/swift"
+	physYSQL "github.com/hashicorp/vault/physical/yugabytedb-ysql"
 	physZooKeeper "github.com/hashicorp/vault/physical/zookeeper"
 	physFile "github.com/hashicorp/vault/sdk/physical/file"
 	physInmem "github.com/hashicorp/vault/sdk/physical/inmem"
@@ -212,6 +213,7 @@ var (
 		"swift":                  physSwift.NewSwiftBackend,
 		"raft":                   physRaft.NewRaftBackend,
 		"zookeeper":              physZooKeeper.NewZooKeeperBackend,
+		"yugabytedb_ysql":        physYSQL.NewYSQLBackend,
 	}
 
 	serviceRegistrations = map[string]sr.Factory{

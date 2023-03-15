@@ -385,6 +385,10 @@
             "path": "configuration/storage/postgresql"
           },
           {
+            "title": "YugabyteDB (YSQL)",
+            "path": "configuration/storage/yugabytedb-ysql"
+          },
+          {
             "title": "Integrated Storage (Raft)",
             "path": "configuration/storage/raft"
           },
