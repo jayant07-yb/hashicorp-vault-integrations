@@ -1,0 +1,100 @@
+---
+layout: docs
+page_title: YugabyteDB (YSQL)  - Storage Backends - Configuration
+description: |-
+  The YugabyteDB (YSQL)   storage backend is used to persist Vault's data in a YugabyteDB instance.
+  server or cluster.
+---
+
+# YugabyteDB (YSQL)   Storage Backend
+
+The YugabyteDB (YSQL)   storage backend is used to persist Vault's data in a YugabyteDB instance.
+[YugabyteDB(YSQL)](https://www.yugabyte.com)
+
+```hcl
+storage "yugabytedb_ysql" {
+  connection_url = "postgres://user123:secret123!@localhost:5433/vault"
+}
+```
+
+~> **Note:** The YugabyteDB (YSQL)   storage backend plugin will attempt to use SSL
+when connecting to the database. If SSL is not enabled the `connection_url`
+will need to be configured to disable SSL. See the documentation below
+to disable SSL.
+
+The YugabyteDB (YSQL) storage backend does not automatically create the table. Here is
+some sample SQL to create the schema and indexes.
+
+```sql
+CREATE TABLE vault_kv_store (
+  parent_path TEXT COLLATE "C" NOT NULL,
+  path        TEXT COLLATE "C",
+  key         TEXT COLLATE "C",
+  value       BYTEA,
+  CONSTRAINT pkey PRIMARY KEY (path, key)
+);
+
+CREATE INDEX parent_path_idx ON vault_kv_store (parent_path);
+```
+
+Store for HAEnabled backend
+
+```sql
+CREATE TABLE vault_ha_locks (
+  ha_key                                      TEXT COLLATE "C" NOT NULL,
+  ha_identity                                 TEXT COLLATE "C" NOT NULL,
+  ha_value                                    TEXT COLLATE "C",
+  valid_until                                 TIMESTAMP WITH TIME ZONE NOT NULL,
+  CONSTRAINT ha_key PRIMARY KEY (ha_key)
+);
+```
+
+## `yugabytedb_ysql` Parameters
+
+- `connection_url` `(string: <required>)` – Specifies the connection string to
+  use to authenticate and connect to YugabyteDB (YSQL). The connection URL can also be
+  set using the `VAULT_PG_CONNECTION_URL` environment variable. A full list of supported
+  parameters can be found in [the pq library documentation][pglib]. For example
+  connection string URLs, see the examples section below.
+
+- `table` `(string: "vault_kv_store")` – Specifies the name of the table in
+  which to write Vault data. This table must already exist (Vault will not
+  attempt to create it).
+
+- `max_idle_connections` `(int)` - Default not set. Sets the maximum number of
+  connections in the idle connection pool. See
+  [golang docs on SetMaxIdleConns][golang_setmaxidleconns] for more information.
+
+- `max_parallel` `(string: "128")` – Specifies the maximum number of concurrent
+  requests to YugabyteDB (YSQL)  .
+
+- `ha_enabled` `(string: "true|false")` – Default not enabled, requires 9.5 or later.
+
+- `ha_table` `(string: "vault_ha_locks")` – Specifies the name of the table to use
+  for storing high availability information. This table must already exist (Vault
+  will not attempt to create it).
+
+## `yugabytedb_ysql ` Examples
+
+### Custom SSL Verification
+
+This example shows connecting to a YugabyteDB (YSQL)   cluster using full SSL
+verification (recommended).
+
+```hcl
+storage "yugabytedb_ysql" {
+  connection_url = "postgres://user:pass@localhost:5433/database?sslmode=verify-full"
+}
+```
+
+To disable SSL verification (not recommended), replace `verify-full` with
+`disable`:
+
+```hcl
+storage "yugabytedb_ysql" {
+  connection_url = "postgres://user:pass@localhost:5433/database?sslmode=disable"
+}
+```
+
+[golang_setmaxidleconns]: https://golang.org/pkg/database/sql/#DB.SetMaxIdleConns
+[pglib]: https://godoc.org/github.com/lib/pq#hdr-Connection_String_Parameters
